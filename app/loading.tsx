@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 // import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
-  const [text, setText] = useState("Loading...");
+  const [text, setText] = useState("Loading");
   useEffect(() => {
     setInterval(() => {
       setText((prev) => prev + ".");
-    }, 500);
+    }, 2000);
   }, [text]);
 
   return (

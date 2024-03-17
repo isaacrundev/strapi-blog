@@ -16,8 +16,7 @@ import Loading from "@/app/loading";
 export function BlogHome() {
   const { data, isLoading } = useQuery({
     queryKey: ["getAllArticles"],
-    queryFn: async () =>
-      await getData(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles`),
+    queryFn: async () => await getData(`/api/articles`),
   });
 
   const articles: Article[] = data?.data;
@@ -50,7 +49,7 @@ export function BlogHome() {
               <div className="mt-4">
                 <Link
                   className="font-semibold underline hover:underline"
-                  href={`/article/${article.id}`}
+                  href={`/articles/${article.id}`}
                 >
                   Read more
                 </Link>

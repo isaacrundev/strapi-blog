@@ -27,17 +27,14 @@ const fontFormat = ({ bold, italic, strikethrough, underline }: Paragragh) => {
 export function Article({ articleId }: { articleId: string }) {
   const { data, isLoading } = useQuery({
     queryKey: ["getOneArticle"],
-    queryFn: async () =>
-      await getData(
-        `${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${articleId}`
-      ),
+    queryFn: async () => await getData(`/api/articles/${articleId}`),
   });
 
   const articleAttributes: ArticleAttributes = data?.data.attributes;
 
   // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
+  //   console.log(articleId);
+  // }, [articleId]);
 
   return (
     // <div className="grid md:grid-cols-[minmax(200px_1fr)] gap-6 max-w-5xl mx-auto items-start px-4 py-6 md:px-6 md:py-12">
