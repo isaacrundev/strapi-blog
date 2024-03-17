@@ -33,7 +33,7 @@ export function BlogHome() {
         articles.map((article) => (
           <Fragment key={v4()}>
             <div className="space-y-2">
-              <Link href={`/article/${article.id}`}>
+              <Link href={`/articles/${article.id}`}>
                 <h2 className="text-3xl font-bold tracking-tight">
                   {article.attributes["Title"]}
                 </h2>
