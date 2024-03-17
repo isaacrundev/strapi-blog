@@ -16,7 +16,7 @@ export type ArticleContent = {
 
 export type Paragragh = {
   text: string;
-  type: "text";
+  type: "text" | "list";
   italic: boolean;
   bold: boolean;
   strikethrough: boolean;

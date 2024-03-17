@@ -12,6 +12,7 @@ import { Fragment, useEffect } from "react";
 import { Article } from "..";
 import { v4 } from "uuid";
 import Loading from "@/app/loading";
+import { ChevronRightIcon } from "lucide-react";
 
 export function BlogHome() {
   const { data, isLoading } = useQuery({
@@ -33,7 +34,7 @@ export function BlogHome() {
         articles.map((article) => (
           <Fragment key={v4()}>
             <div className="space-y-2">
-              <Link href={`/articles/${article.id}`}>
+              <Link className="inline-flex" href={`/articles/${article.id}`}>
                 <h2 className="text-3xl font-bold tracking-tight">
                   {article.attributes["Title"]}
                 </h2>
@@ -48,10 +49,13 @@ export function BlogHome() {
               </p>
               <div className="mt-4">
                 <Link
-                  className="font-semibold underline hover:underline"
+                  className="font-semibold underline hover:underline inline-flex items-center"
                   href={`/articles/${article.id}`}
                 >
                   Read more
+                  <span>
+                    <ChevronRightIcon className="w-4 h-4" />
+                  </span>
                 </Link>
               </div>
             </div>

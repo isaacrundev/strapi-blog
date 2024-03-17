@@ -20,7 +20,7 @@ export default function Header() {
           </h1>
         </Link>
         <p className="text-gray-500 dark:text-gray-400">
-          Musings on technology, design, and the web
+          Thoughts, musings, and updates.
         </p>
       </div>
       <nav className="flex items-center space-x-4">

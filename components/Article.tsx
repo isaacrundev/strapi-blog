@@ -12,17 +12,7 @@ import { Fragment, Suspense, useEffect } from "react";
 import { ArticleAttributes, Paragragh } from "..";
 import { v4 } from "uuid";
 import Loading from "@/app/loading";
-
-const fontFormat = ({ bold, italic, strikethrough, underline }: Paragragh) => {
-  let fontArray: string[] = [];
-
-  if (bold) fontArray = [...fontArray, "font-bold"];
-  if (italic) fontArray = [...fontArray, "italic"];
-  if (strikethrough) fontArray = [...fontArray, "line-through"];
-  if (underline) fontArray = [...fontArray, "underline"];
-
-  return fontArray.join(" ");
-};
+import { fontFormat } from "@/helpers/fontFormatter";
 
 export function Article({ articleId }: { articleId: string }) {
   const { data, isLoading } = useQuery({
