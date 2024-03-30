@@ -34,9 +34,9 @@ export function Article({ articleId }: { articleId: string }) {
           {isLoading && <Loading />}
           {data && (
             <>
-              <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
+              <h2 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
                 {article.attributes.Title}
-              </h1>
+              </h2>
               <p className="text-gray-500 dark:text-gray-400">
                 {article.attributes.Date?.toString()}
               </p>
