@@ -8,11 +8,11 @@
 import { getData } from "@/helpers/getData";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Fragment, Suspense, useEffect } from "react";
-import { ArticleAttributes, Paragragh } from "..";
+import { Fragment, useEffect } from "react";
 import { v4 } from "uuid";
 import Loading from "@/app/loading";
-import { fontFormat } from "@/helpers/fontFormatter";
+import { APIResponseData } from "@/types/types";
+import BlockRendererClient from "./BlockRendererClient";
 
 export function Article({ articleId }: { articleId: string }) {
   const { data, isLoading } = useQuery({
@@ -20,7 +20,7 @@ export function Article({ articleId }: { articleId: string }) {
     queryFn: async () => await getData(`/api/articles/${articleId}`),
   });
 
-  const articleAttributes: ArticleAttributes = data?.data.attributes;
+  const article: APIResponseData<"api::article.article"> = data?.data;
 
   // useEffect(() => {
   //   console.log(articleId);
@@ -35,34 +35,28 @@ export function Article({ articleId }: { articleId: string }) {
           {data && (
             <>
               <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
-                {articleAttributes.Title}
+                {article.attributes.Title}
               </h1>
               <p className="text-gray-500 dark:text-gray-400">
-                {articleAttributes.Date}
+                {article.attributes.Date?.toString()}
               </p>
             </>
           )}
         </div>
         <article className="prose prose-gray max-w-none not-italic space-y-8">
+          {/* {data &&
+            article.attributes.Content!.map((node) => (
+              <Fragment key={v4()}>
+                {node && (
+                  // <p className={fontFormat(node.children[0])} key={v4()}>
+                  <p className={fontFormatter(node.children[0])} key={v4()}>
+                    {node.children[0].type === "text" && node.children[0].text}
+                  </p>
+                )}
+              </Fragment>
+            ))} */}
           {data && (
-            <>
-              {articleAttributes.Content.map((paragraph) => (
-                <Fragment key={v4()}>
-                  {paragraph && (
-                    <p
-                      className={
-                        // `${paragraph.children[0].italic ? "italic" : ""}
-                        // ${paragraph.children[0].bold ? "font-bold" : ""}`
-                        fontFormat(paragraph.children[0])
-                      }
-                      key={v4()}
-                    >
-                      {paragraph.children[0].text}
-                    </p>
-                  )}
-                </Fragment>
-              ))}
-            </>
+            <BlockRendererClient content={article.attributes.Content!} />
           )}
         </article>
       </div>
@@ -72,7 +66,7 @@ export function Article({ articleId }: { articleId: string }) {
             You Might Not Like...
           </h2>
           <p className="text-gray-500 dark:text-gray-400">
-            Because they&#39;re just randomly picked. 0% Algorithm.
+            Because they&#39;re just randomly picked.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">

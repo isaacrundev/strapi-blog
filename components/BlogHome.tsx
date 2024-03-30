@@ -13,6 +13,8 @@ import { Article } from "..";
 import { v4 } from "uuid";
 import Loading from "@/app/loading";
 import { ChevronRightIcon } from "lucide-react";
+import { APIResponseCollection, APIResponseData } from "@/types/types";
+import BlockRendererClient from "./BlockRendererClient";
 
 export function BlogHome() {
   const { data, isLoading } = useQuery({
@@ -20,7 +22,7 @@ export function BlogHome() {
     queryFn: async () => await getData(`/api/articles`),
   });
 
-  const articles: Article[] = data?.data;
+  const articles: APIResponseCollection<"api::article.article"> = data;
 
   // useEffect(() => {
   //   console.log(data);
@@ -31,21 +33,24 @@ export function BlogHome() {
   return (
     <div className="grid gap-6 md:gap-8">
       {data &&
-        articles.map((article) => (
-          <Fragment key={v4()}>
+        articles.data.map((article) => (
+          <Fragment key={article.id}>
             <div className="space-y-2">
               <Link className="inline-flex" href={`/articles/${article.id}`}>
                 <h2 className="text-3xl font-bold tracking-tight">
-                  {article.attributes["Title"]}
+                  {article.attributes.Title}
                 </h2>
               </Link>
               <p className="text-gray-500 dark:text-gray-400">
-                {article.attributes["Date"]}
+                {article.attributes.Date?.toString()}
               </p>
             </div>
             <div className="space-y-4">
-              <p className="line-clamp-2">
+              {/* <p className="line-clamp-2">
                 {article.attributes.Content[0].children[0].text}
+              </p> */}
+              <p className=" line-clamp-2">
+                <BlockRendererClient content={article.attributes.Content!} />
               </p>
               <div className="mt-4">
                 <Link

@@ -3,20 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "copytypes": "node copyTypes.js",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
+    "@strapi/blocks-react-renderer": "^1.0.1",
+    "@strapi/strapi": "^4.20.5",
     "@tanstack/react-query": "^5.28.0",
     "@types/uuid": "^9.0.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.356.0",
     "next": "14.1.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1"
