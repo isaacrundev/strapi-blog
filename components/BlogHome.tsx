@@ -17,7 +17,7 @@ import DOMPurify from "dompurify";
 export function BlogHome() {
   const { data: posts, isLoading } = useQuery({
     queryKey: ["fetchAllPosts"],
-    queryFn: async () => await getData("/api/posts/home"),
+    queryFn: async () => await getData("/api/posts/blog-home"),
     select: (data) => data.posts.edges,
   });
 
