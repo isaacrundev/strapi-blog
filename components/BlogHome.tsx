@@ -5,67 +5,69 @@
  * @see https://v0.dev/t/20tJpmmWf5L
  */
 
-import { getData } from "@/helpers/getData";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Fragment, useEffect } from "react";
-import { Article } from "..";
-import { v4 } from "uuid";
+import { Fragment, Key, useEffect } from "react";
 import Loading from "@/app/loading";
 import { ChevronRightIcon } from "lucide-react";
-import { APIResponseCollection, APIResponseData } from "@/types/types";
-import BlockRendererClient from "./BlockRendererClient";
+import { getData } from "@/helpers/getData";
+import { HomePost, Post } from "..";
+import DOMPurify from "dompurify";
 
 export function BlogHome() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["getAllArticles"],
-    queryFn: async () => await getData(`/api/articles`),
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ["fetchAllPosts"],
+    queryFn: async () => await getData("/api/posts/home"),
+    select: (data) => data.posts.edges,
   });
 
-  const articles: APIResponseCollection<"api::article.article"> = data;
-
   // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
+  //   console.log(posts);
+  // }, [posts]);
 
   isLoading && <Loading />;
 
+  const htmlSanitizer = (content: string) => ({
+    __html: DOMPurify.sanitize(content),
+  });
+
   return (
     <div className="grid gap-6 md:gap-8">
-      {data &&
-        articles.data.map((article) => (
-          <Fragment key={article.id}>
-            <div className="space-y-2">
-              <Link className="inline-flex" href={`/articles/${article.id}`}>
-                <h2 className="text-3xl font-bold tracking-tight">
-                  {article.attributes.Title}
-                </h2>
-              </Link>
-              <p className="text-gray-500 dark:text-gray-400">
-                {article.attributes.Date?.toString()}
-              </p>
-            </div>
-            <div className="space-y-4">
-              {/* <p className="line-clamp-2">
-                {article.attributes.Content[0].children[0].text}
-              </p> */}
-              <p className=" line-clamp-2">
-                <BlockRendererClient content={article.attributes.Content!} />
-              </p>
-              <div className="mt-4">
-                <Link
-                  className="font-semibold underline hover:underline inline-flex items-center"
-                  href={`/articles/${article.id}`}
-                >
-                  Read more
-                  <span>
-                    <ChevronRightIcon className="w-4 h-4" />
-                  </span>
+      {posts &&
+        posts.map((post: HomePost) => {
+          return (
+            <Fragment key={post.node.id}>
+              <div className="space-y-2">
+                <Link className="inline-flex" href={`/posts/${post.node.id}`}>
+                  <h2 className="text-3xl font-bold tracking-tight">
+                    {post.node.title}
+                  </h2>
                 </Link>
+                <p className="text-gray-500 dark:text-gray-400">
+                  {new Date(post.node.date).toLocaleDateString()}
+                </p>
               </div>
-            </div>
-          </Fragment>
-        ))}
+              <div className="space-y-4">
+                <div className=" line-clamp-2">
+                  <div
+                    dangerouslySetInnerHTML={htmlSanitizer(post.node.content)}
+                  />
+                </div>
+                <div className="mt-4">
+                  <Link
+                    className="font-semibold underline hover:underline inline-flex items-center"
+                    href={`/posts/${post.node.id}`}
+                  >
+                    Read more
+                    <span>
+                      <ChevronRightIcon className="w-4 h-4" />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </Fragment>
+          );
+        })}
     </div>
   );
 }
